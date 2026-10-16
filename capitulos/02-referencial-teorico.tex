@@ -1,124 +1,73 @@
 %%=============================================================================
 %% CAPITULO 2 -- REFERENCIAL TEORICO
-%%
-%% Esta e a parte do trabalho que mais demanda dominio das regras de citacao
-%% (diretas e indiretas). Reveja a NBR 10520 antes de escrever.
+%% Versao dummy: resumo do capitulo 02-referencial-teorico da dissertacao real.
 %%=============================================================================
 
 \section{Referencial teórico}
 
-Texto introdutório de um parágrafo, conforme exigido pela ABNT. Essa parte do
-trabalho demanda o domínio das regras de citação (diretas e indiretas). É nessa
-parte do trabalho que problemas legais em relação à apropriação de ideias de
-outros autores ocorrem com maior frequência. Portanto, reveja as regras
-estabelecidas pela ABNT para citações diretas e indiretas e para a indicação de
-fontes de gráficos, figuras ou outro recurso ilustrativo utilizado.
+A técnica de RAG enriquece o contexto do modelo de linguagem com documentos
+recuperados de uma base de conhecimento indexada, o que reduz o risco de
+alucinações e atualiza o conhecimento do modelo sem novo treinamento, conforme
+proposto por \citeonline{lewis2020}. Nesta pesquisa, a RAG se combina com o
+acoplamento, via \textit{function calling}, de um módulo de cálculo
+quantitativo determinístico. A Figura~\ref{fig:arquitetura} sintetiza a
+arquitetura proposta e mostra a segregação entre o processamento numérico
+determinístico e a geração de linguagem natural.
 
-É importante lembrar que o desenvolvimento do trabalho será guiado pelo
-orientador, a quem cabe julgar se a Seção 2 poderá iniciar-se por ``revisão de
-literatura'', ``referencial teórico'' ou já abordar o primeiro tema a ser
-discutido no trabalho. O número de subtópicos desse item dependerá dos conceitos
-envolvidos na sua questão problema.
-
-%% --- Exemplo de figura com legenda ACIMA e fonte ABAIXO --------------------
 \begin{figure}[htb]
-  \caption{Título da Figura}
-  \label{fig:exemplo}
+  \caption{Arquitetura de agente único com segregação entre cálculo determinístico e geração de linguagem}
+  \label{fig:arquitetura}
   \centering
-  \includegraphics[width=0.6\textwidth]{figuras/exemplo-figura.png}
-  \fonte{Niemeyer (2008).}
+  \footnotesize
+  \begin{tikzpicture}[
+    node distance=6mm,
+    box/.style={draw, rounded corners=2pt, align=center, inner sep=4pt, minimum height=8mm},
+    ext/.style={box, dashed, minimum width=30mm},
+    core/.style={box, thick, minimum width=34mm},
+    io/.style={box, minimum width=30mm},
+    arrow/.style={-{Latex[length=2mm]}, thick},
+    feed/.style={-{Latex[length=2mm]}, dashed}
+  ]
+    \node[io] (cliente) {Cliente pessoa física\\{\scriptsize (pergunta em linguagem natural)}};
+    \node[core, below=of cliente] (agente) {\textbf{Agente LLM único}\\{\scriptsize orquestração via \textit{function calling}}};
+
+    \node[core, below left=10mm and 2mm of agente] (python) {Módulo determinístico\\Python\\{\scriptsize RFL, IR/IOF, \textit{duration}}};
+    \node[core, below right=10mm and 2mm of agente] (rag) {Base RAG normativa\\{\scriptsize CVM, CMN, Tesouro, IR/IOF}};
+
+    \node[ext, below=9mm of python] (apis) {Dados públicos\\{\scriptsize BCB e Tesouro Transparente}};
+    \node[ext, below=9mm of rag] (normas) {Normativos vigentes\\{\scriptsize com metadados de vigência}};
+
+    \node[io, above right=6mm and 4mm of cliente] (xai) {Log estruturado XAI\\{\scriptsize trilha de auditoria}};
+
+    \draw[arrow] (cliente) -- node[midway, left, xshift=-1mm] {\scriptsize pergunta} (agente);
+    \draw[arrow] (agente) -- (python) node[midway, left, xshift=-1mm] {\scriptsize cálculo};
+    \draw[arrow] (agente) -- (rag) node[midway, right, xshift=1mm] {\scriptsize consulta};
+    \draw[arrow] (python) -- (agente);
+    \draw[arrow] (rag) -- (agente);
+    \draw[feed] (apis) -- (python);
+    \draw[feed] (normas) -- (rag);
+    \draw[arrow] (agente.west) to[out=180, in=180] node[midway, left, align=right] {\scriptsize resposta em\\\scriptsize linguagem natural} (cliente.west);
+    \draw[arrow] (agente.east) to[out=0, in=-90] node[midway, right, yshift=-2mm] {\scriptsize log} (xai.south);
+  \end{tikzpicture}
+  \fonte{Elaborada pelo autor (2026).}
 \end{figure}
 
-Caso a ilustração seja de sua autoria, escreva \textbf{Fonte:} Do autor
-(\the\year). Use o mesmo padrão para quadros e gráficos, alterando apenas o
-título. Se precisar de notas de rodapé\footnote{Texto de exemplo para nota de
-rodapé. A nota de rodapé apresenta informações ou comentários adicionais sobre o
-conteúdo, em fonte 10 e espaçamento simples.}, elas devem estar dispostas no pé
-da página.
-
-\subsection{Título representativo do primeiro conceito: subtítulo se houver}
-
-Discussão específica sobre a articulação das informações com foco na delimitação
-proposta pelos cursistas (bibliografia e orientação a cargo dos orientadores
-acadêmicos).
-
-\subsubsection{Título representativo: subtítulo se houver}
-
-No decorrer do desenvolvimento de cada capítulo (seção) e subcapítulo (subseção)
-utilizam-se citações diretas e indiretas para esclarecimentos, sustentações ou
-ilustrações de determinado assunto. A citação direta é a transcrição textual, sem
-alteração, de parte da obra do autor consultado.
-
-\textbf{Exemplo: citação direta de até 3 linhas} --- vai entre aspas duplas, no
-corpo do parágrafo:
-
-De acordo com \citeonline[p.~35]{sa1971}, acontece ``por meio da mesma arte de
-conversação que abrange tão extensa e significativa parte da nossa existência
-cotidiana''.
-
-\textbf{Exemplo: citação direta com mais de 3 linhas} --- recuo de 4~cm, fonte
-10, espaçamento simples e sem aspas:
-
-Assim, de acordo com Nicholls:
+No domínio financeiro-regulatório brasileiro, a aplicação de RAG sobre os
+normativos da Comissão de Valores Mobiliários (CVM), as resoluções do Conselho
+Monetário Nacional (CMN) e a legislação tributária permite ao agente responder
+com fundamentação documental rastreável. Esse é um requisito essencial para a
+conformidade com a Resolução CVM nº~30/2021, que estabelece o dever de
+verificação da adequação dos produtos, serviços e operações ao perfil do
+cliente (\textit{suitability}), nos seguintes termos:
 
 \begin{citacao}
-A teleconferência permite ao indivíduo participar de um encontro nacional ou
-regional sem a necessidade de deixar seu local de origem. Tipos comuns de
-teleconferência incluem o uso da televisão, telefone e computador. Através de
-áudio-conferência, utilizando a companhia local de telefone, um sinal de áudio
-pode ser emitido em um salão de qualquer dimensão. \parencite[p.~181]{nicholls1993}
+Art. 2º As pessoas habilitadas a atuar como integrantes do sistema de
+distribuição e os consultores de valores mobiliários não podem recomendar
+produtos, realizar operações ou prestar serviços sem que verifiquem sua
+adequação ao perfil do cliente. [...] Art. 3º As pessoas referidas no art. 2º
+devem verificar se: I – o produto, serviço ou operação é adequado aos
+objetivos de investimento do cliente; II – a situação financeira do cliente é
+compatível com o produto, serviço ou operação; e III – o cliente possui
+conhecimento necessário para compreender os riscos relacionados ao produto,
+serviço ou operação. \parencite[p.~1]{resolucaocvm30}
 \end{citacao}
-
-\textbf{Exemplo: citação indireta} --- é o texto baseado na obra do autor
-consultado; você transcreve aquilo que entendeu do texto lido:
-
-Para \citeonline{authier1982}, a ironia seria assim uma forma implícita de
-heterogeneidade. Para mais informações sobre citação, consulte a norma
-NBR 10520 \parencite{abnt10520}.
-
-%% --- Exemplo de quadro -----------------------------------------------------
-\begin{quadro}[htb]
-  \caption{Título do quadro}
-  \label{qua:exemplo}
-  \centering
-  \begin{tabular}{ll}
-    \toprule
-    \textbf{Elemento} & \textbf{Norma aplicável} \\
-    \midrule
-    Trabalhos acadêmicos & NBR 14724 \\
-    Referências          & NBR 6023  \\
-    Citações             & NBR 10520 \\
-    Sumário              & NBR 6027  \\
-    Resumo               & NBR 6028  \\
-    \bottomrule
-  \end{tabular}
-  \fonte{Elaborado pelo autor (\the\year).}
-\end{quadro}
-
-%% --- Exemplo de tabela -----------------------------------------------------
-\begin{table}[htb]
-  \caption{Nome da Tabela 1}
-  \label{tab:exemplo}
-  \centering
-  \begin{tabular}{lrr}
-    \toprule
-    \textbf{Categoria} & \textbf{Frequência} & \textbf{\%} \\
-    \midrule
-    Categoria A & 120 & 40,0 \\
-    Categoria B &  90 & 30,0 \\
-    Categoria C &  90 & 30,0 \\
-    \midrule
-    \textbf{Total} & \textbf{300} & \textbf{100,0} \\
-    \bottomrule
-  \end{tabular}
-  \fonte{Dados da pesquisa (\the\year).}
-\end{table}
-
-%% --- Exemplo de grafico ----------------------------------------------------
-\begin{grafico}[htb]
-  \caption{Nome do Gráfico 1}
-  \label{gra:exemplo}
-  \centering
-  \includegraphics[width=0.55\textwidth]{figuras/exemplo-figura.png}
-  \fonte{Elaborado pelo autor (\the\year).}
-\end{grafico}

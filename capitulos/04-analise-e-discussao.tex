@@ -1,22 +1,27 @@
 %%=============================================================================
 %% CAPITULO 4 -- APRESENTACAO, ANALISE E DISCUSSAO DOS DADOS
+%% Versao dummy: resumo dos capitulos 05-resultados e 06-discussao da
+%% dissertacao real.
 %%=============================================================================
 
 \section{Análise e discussão dos dados}
 
-Apresente os resultados alcançados ou esperados e faça uma análise comparativa
-entre os resultados esperados e os alcançados com a execução do projeto de
-pesquisa ou de intervenção.
+O módulo de cálculo, escrito em Python puro, foi conferido contra o gabarito
+do conjunto de casos de cálculo, com o critério de aceite, fixado antes da
+conferência, de uma diferença de no máximo R\$~0,01 em cada um dos 600 casos.
+O módulo cumpriu o critério em todos eles, e os 17 testes automatizados,
+que incluem os casos-limite de prazo zero, de 29 e 30 dias na fronteira do
+IOF e de taxa de rendimento nula, passam sem acesso à rede. A base regulatória
+foi dividida em 3.989 trechos, e, nas perguntas de teste, a busca híbrida teve
+os maiores valores em todas as métricas, exceto no recall@1, em que a busca
+semântica ficou à frente.
 
-\subsection{Apresentação dos resultados}
-
-Organize os resultados na mesma ordem em que os objetivos específicos foram
-enunciados na introdução. Use tabelas, quadros e gráficos sempre que isso tornar
-a leitura mais clara, lembrando que toda ilustração precisa ser citada no texto
-(ver Tabela~\ref{tab:exemplo} e Figura~\ref{fig:exemplo}).
-
-\subsection{Discussão}
-
-Confronte os resultados com o referencial teórico construído no Capítulo~2.
-Indique convergências, divergências e possíveis explicações, sempre com o devido
-suporte bibliográfico.
+Esses resultados são parciais, porque a avaliação técnica automatizada das
+respostas do agente ainda depende da execução do experimento. Entre as
+limitações, a clareza das respostas é validada por LLM-as-a-judge e por
+métrica de legibilidade, sem validação humana complementar, e 10 das 51
+perguntas de teste da base ficaram sem trecho correto entre os 10 primeiros
+resultados. A discussão também reposiciona o sentido de democratização: para o
+perfil Sem Reservas, sem capacidade real de investimento, a resposta correta
+do sistema é não recomendar produto algum, em respeito à vedação da Resolução
+CVM nº~30/2021 de recomendar produto inadequado ao perfil do cliente.
